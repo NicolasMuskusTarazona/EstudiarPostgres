@@ -40,3 +40,24 @@ INSERT INTO productos(nombre,precio,presente,fecha_implementacion,fecha_compra,d
 SELECT * FROM productos;
 ```
 
+### Constraints
+
+- 2. Estudiantes
+```SQL
+CREATE TABLE estudiantes(
+    id SERIAL PRIMARY KEY,
+    nombre VARCHAR(50) NOT NULL,
+    edad INTEGER CHECK (edad > 0),
+    correo VARCHAR(100) UNIQUE
+);
+
+INSERT INTO estudiantes(nombre,edad,correo)VALUES
+('Nicolas Muskus Tarazona',17,'nicolasmuskus1@gmail.com'),
+('Danilo Muskus Tarazona',17,'danilomuskus1@gmail.com');
+--> Estudiante con edad -1 debe fallar
+INSERT INTO estudiantes(nombre,edad,correo)VALUES
+('a',-1,'a@gmail.com');
+--> Estudiante con correo repetido debe fallar 
+INSERT INTO estudiantes(nombre,edad,correo)VALUES
+('Nicolas del futuro',1000,'nicolasmuskus1@gmail.com');
+```
