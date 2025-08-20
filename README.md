@@ -96,3 +96,12 @@ INSERT INTO Region(id_region,id_pais,nombre)VALUES
 INSERT INTO Ciudad(id_ciudad,id_region,nombre)VALUES
 (1,1,'Bucaramanga');
 ```
+
+### Funciones con Fecha
+```SQL
+SELECT CURRENT_DATE; --> FECHA DE HOY
+SELECT NOW(); --> FECHA Y HORA EXACTA DEL MOMENTO
+SELECT AGE(DATE '2008-02-15'); --> SACAR SU EDAD
+SELECT EXTRACT(YEAR FROM NOW()); --> EXTRAER EL AÑO
+
+```
