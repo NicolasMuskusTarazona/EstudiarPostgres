@@ -61,3 +61,38 @@ INSERT INTO estudiantes(nombre,edad,correo)VALUES
 INSERT INTO estudiantes(nombre,edad,correo)VALUES
 ('Nicolas del futuro',1000,'nicolasmuskus1@gmail.com');
 ```
+### Relaciones
+
+- 3. Pais, Region, Ciudad
+```SQL
+DROP TABLE IF EXISTS Ciudad;
+DROP TABLE IF EXISTS Region;
+DROP TABLE IF EXISTS Pais;
+
+CREATE TABLE Pais(
+    id SERIAL PRIMARY KEY,
+    nombre VARCHAR(150) UNIQUE NOT NULL
+);
+
+CREATE TABLE Region(
+    id_region INT NOT NULL PRIMARY KEY,
+    id_pais INT NOT NULL,
+    nombre VARCHAR(150) UNIQUE NOT NULL,
+    FOREIGN KEY (id_pais)REFERENCES Pais(id) ON DELETE CASCADE
+);
+
+CREATE TABLE Ciudad(
+    id_ciudad INT NOT NULL,
+    id_region INT NOT NULL,
+    nombre VARCHAR(150) UNIQUE NOT NULL,
+    PRIMARY KEY(id_ciudad),
+    FOREIGN KEY (id_region)REFERENCES Region(id_region) ON DELETE CASCADE
+);
+
+INSERT INTO Pais(nombre)VALUES
+('Colombia');
+INSERT INTO Region(id_region,id_pais,nombre)VALUES
+(1,1,'Santander');
+INSERT INTO Ciudad(id_ciudad,id_region,nombre)VALUES
+(1,1,'Bucaramanga');
+```
