@@ -99,6 +99,14 @@ INSERT INTO Ciudad(id_ciudad,id_region,nombre)VALUES
 (2,1,'Giron');
 INSERT INTO Ciudad(id_ciudad,id_region,nombre)VALUES
 (3,1,'Floridablanca');
+
+
+--> Indices 
+
+CREATE INDEX idx_pais ON Pais(nombre);
+CREATE INDEX idx_ciudad ON Ciudad(nombre);
+CREATE INDEX idx_region ON Region(nombre);
+
 ```
 
 ### Funciones con Fecha
@@ -131,4 +139,50 @@ SELECT Ciudad, COUNT(*) AS total_ciudad,
 FROM Ciudad
 GROUP BY Ciudad;
 
+```
+
+### Distinct y Between
+```SQL
+SELECT DISTINCT nombre FROM Pais;
+SELECT DISTINCT nombre FROM Ciudad;
+
+---> ESTA MAL el WHERE siempre va después de FROM.
+SELECT COUNT(*) WHERE poblacion BETWEEN 700000 AND 2000000 FROM Ciudad;
+---> forma correcta 
+SELECT nombre AS ciudad, poblacion
+FROM Ciudad
+WHERE poblacion BETWEEN 700000 AND 2000000;
+
+
+CREATE OR REPLACE PROCEDURE suma_poblacion_pais(p_id_pais INT)
+LANGUAGE plpgsql
+AS $$
+DECLARE
+    total_poblacion BIGINT; -- Variable para guardar la suma de la población
+BEGIN
+    SELECT SUM(Ciudad.poblacion)
+    INTO total_poblacion
+    FROM Ciudad
+    JOIN Region ON Ciudad.id_region = Region.id_region
+    JOIN Pais ON Region.id_pais = Pais.id
+    WHERE Pais.id = p_id_pais;
+
+    -- Mostrar resultado en consola
+    RAISE NOTICE 'La población total del país con id % es: %', p_id_pais, COALESCE(total_poblacion,0);
+END;
+$$;
+
+SELECT 
+    Ciudad.nombre AS ciudad,
+    Region.nombre AS Region,
+    Pais.nombre AS Pais --> Aqui no tiene que estar ninguna coma
+FROM Ciudad --> La ultima tabla que conecta con la principal
+JOIN Region ON Ciudad.id_region = Region.id_region --> tabla intermediara
+JOIN Pais ON Region.id_pais = Pais.id;  --> tabla principal
+
+SELECT 
+    Ciudad.nombre AS ciudad,
+    Region.nombre AS Region
+FROM Ciudad --> La ultima tabla que conecta con la principal
+JOIN Region ON Ciudad.id_region = Region.id_region; --> tabla intermediara
 ```
